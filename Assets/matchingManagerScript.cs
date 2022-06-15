@@ -9,9 +9,11 @@ using UnityEngine.SceneManagement;
 public class matchingManagerScript : MonoBehaviour
 {
     private WebSocket ws;
-    public static matchingManagerScript instance;
-    public string userUuid;
-    public string room;
+
+    public static string userUuid;
+    public static string room;
+
+    private bool key = false;
 
     [System.Serializable]
     public class PlayerData
@@ -31,14 +33,13 @@ public class matchingManagerScript : MonoBehaviour
 
         ws.OnMessage += (sender, e) =>
         {
-            Debug.Log(e.Data);
             PlayerData d = JsonUtility.FromJson<PlayerData>(e.Data);
-            Debug.Log(d.playerA);
-            Debug.Log(d.playerB);
-            Debug.Log(this.userUuid);
-            if(d.playerA == this.userUuid || d.playerB == this.userUuid){
-                this.room = d.playerA;
-                SceneManager.LoadScene("FightingScene");
+            //Debug.Log(d.playerA, d.playerB);
+            Debug.Log(userUuid);
+            if(d.playerA == userUuid || d.playerB == userUuid){
+                room = d.playerA;
+                Debug.Log(room);
+                key = true;
             }
             else{
                 Debug.Log("まだ待機");
@@ -61,12 +62,13 @@ public class matchingManagerScript : MonoBehaviour
         string sendedJson = "{\"uuid\": \"" + guidValue.ToString() + "\"}";
         ws.Send(sendedJson);
 
-        this.userUuid = guidValue.ToString();
+        userUuid = guidValue.ToString();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(key) SceneManager.LoadScene("FightingScene");
         
     }
 }

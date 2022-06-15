@@ -8,11 +8,10 @@ using WebSocketSharp.Net;
 
 public class waitingController : MonoBehaviour
 {
-    private WebSocket ws;
-    public static waitingController instance2;
-    public bool gamePlyerOk = false;//falseがだめ,trueがok
+    private WebSocket ws2;
+    public static bool gamePlayerOk = false;//falseがだめ,trueがok
 
-    public int[] gameRandomRule;
+    public static int[] gameRandomRule;
 
     [System.Serializable]
     public class RoomDatas
@@ -24,49 +23,49 @@ public class waitingController : MonoBehaviour
     [System.Serializable]
     public class RoomSettings
     {
-        public string go;
+        public string res;
         public int[] random;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        ws = new WebSocket("ws://localhost:8000/ws/waitingroom/" + matchingManagerScript.instance.room + "/");
-        ws.OnOpen += (sender, e) =>
+        ws2 = new WebSocket("ws://localhost:8000/ws/waitingroom/" + matchingManagerScript.room + "/");
+        ws2.OnOpen += (sender, e) =>
         {
             Debug.Log("WebSocket Open");
         };
 
-        ws.OnMessage += (sender, e) =>
+        ws2.OnMessage += (sender, e) =>
         {
             //ここに開始処理を書く
             RoomSettings rs = JsonUtility.FromJson<RoomSettings>(e.Data);
-            if(rs.go == "OK"){
-                this.gamePlyerOk = true;
-                this.gameRandomRule = rs.random;
+            if(rs.res == "OK"){
+                gamePlayerOk = true;
+                gameRandomRule = rs.random;
             }
 
         };
 
-        ws.OnError += (sender, e) =>
+        ws2.OnError += (sender, e) =>
         {
             Debug.Log("WebSocket Error Message: " + e.Message);
         };
 
-        ws.OnClose += (sender, e) =>
+        ws2.OnClose += (sender, e) =>
         {
             Debug.Log("WebSocket Close");
         };
 
-        ws.Connect();
+        ws2.Connect();
 
         RoomDatas d = new RoomDatas();
-        d.uuid = matchingManagerScript.instance.userUuid;
-        d.roomUuid = matchingManagerScript.instance.room;
+        d.uuid = matchingManagerScript.userUuid;
+        d.roomUuid = matchingManagerScript.room;
 
         string sendedJson_wait = JsonUtility.ToJson(d);
 
-        ws.Send(sendedJson_wait);
+        ws2.Send(sendedJson_wait);
     }
 
     // Update is called once per frame

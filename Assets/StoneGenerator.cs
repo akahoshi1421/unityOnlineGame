@@ -7,6 +7,7 @@ public class StoneGenerator : MonoBehaviour
     // Start is called before the first frame update
 
     public GameObject stonePrefab;
+
     float span = 2.0f;
     float delta = 0;
     //int[] test = {1,3,1,2,3,2,1};
@@ -20,7 +21,7 @@ public class StoneGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(waitingController.instance2.gamePlyerOk){
+        if(waitingController.gamePlayerOk){
             this.delta += Time.deltaTime;
             if(this.delta > this.span){
                 this.delta = 0;
@@ -28,7 +29,7 @@ public class StoneGenerator : MonoBehaviour
 
                 GameObject stn = Instantiate(stonePrefab);//自分
                 GameObject stn2 = Instantiate(stonePrefab);//相手
-                int pos = waitingController.instance2.gameRandomRule[cnt];
+                int pos = waitingController.gameRandomRule[cnt];
                 float pos_x = 0.0f;
                 float pos_x2 = 0.0f;
                 switch(pos){
