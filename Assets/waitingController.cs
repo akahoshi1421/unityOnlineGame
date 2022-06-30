@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using WebSocketSharp;
 using WebSocketSharp.Net;
 
@@ -43,6 +44,7 @@ public class waitingController : MonoBehaviour
             if(rs.res == "OK"){
                 gamePlayerOk = true;
                 gameRandomRule = rs.random;
+                TextDelete();
             }
 
         };
@@ -66,6 +68,12 @@ public class waitingController : MonoBehaviour
         string sendedJson_wait = JsonUtility.ToJson(d);
 
         ws2.Send(sendedJson_wait);
+    }
+
+    void TextDelete()
+    {
+        GameObject t = GameObject.Find("matching");
+        t.GetComponent<Text> ().text = "";
     }
 
     // Update is called once per frame

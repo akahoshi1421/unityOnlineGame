@@ -5,17 +5,24 @@ using UnityEngine;
 public class stonefall : MonoBehaviour
 {
     // Start is called before the first frame update
-    private float startrate = -0.01f;
+    private float startrate = -0.05f;
+    int cnt = 0;
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        
+        if(cnt % 5000 == 0){
+            this.startrate *= 2.0f;
+            Debug.Log("aaa");
+        }
+
         transform.Translate(0, this.startrate, 0);
-        this.startrate *= 1.002f;
 
         if(transform.position.y < -5.0f)
         {
             Destroy(gameObject);
         }
+        cnt++;
     }
 }

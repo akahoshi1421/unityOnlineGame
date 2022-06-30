@@ -19,19 +19,26 @@ public class StoneGenerator : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if(waitingController.gamePlayerOk){
             this.delta += Time.deltaTime;
             if(this.delta > this.span){
                 this.delta = 0;
-                if(this.cnt == 10) this.cnt = 0;
+                if(this.cnt == 10){
+                    this.cnt = 0;
+                    if(this.span > 0.5f){
+                        this.span -= 0.1f;
+                    }
+                } 
+                
 
                 GameObject stn = Instantiate(stonePrefab);//自分
                 GameObject stn2 = Instantiate(stonePrefab);//相手
                 int pos = waitingController.gameRandomRule[cnt];
                 float pos_x = 0.0f;
                 float pos_x2 = 0.0f;
+                
                 switch(pos){
                     case 1:
                         pos_x = -9.7f;
