@@ -14,6 +14,8 @@ public class waitingController : MonoBehaviour
 
     public static int[] gameRandomRule;
 
+    bool textdelte = false;
+
     [System.Serializable]
     public class RoomDatas
     {
@@ -44,7 +46,7 @@ public class waitingController : MonoBehaviour
             if(rs.res == "OK"){
                 gamePlayerOk = true;
                 gameRandomRule = rs.random;
-                TextDelete();
+                textdelte = true;
             }
 
         };
@@ -72,13 +74,17 @@ public class waitingController : MonoBehaviour
 
     void TextDelete()
     {
-        GameObject t = GameObject.Find("matching");
-        t.GetComponent<Text> ().text = "";
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(textdelte){
+            textdelte = false;
+            GameObject t = GameObject.Find("matching");
+            t.GetComponent<Text> ().text = "";
+        }
+
     }
 }

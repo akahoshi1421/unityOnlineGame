@@ -14,7 +14,6 @@ public class stonefall : MonoBehaviour
         
         if(cnt % 5000 == 0){
             this.startrate *= 2.0f;
-            Debug.Log("aaa");
         }
 
         transform.Translate(0, this.startrate, 0);

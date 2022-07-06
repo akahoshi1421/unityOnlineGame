@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using WebSocketSharp;
 using WebSocketSharp.Net;
+using UnityEngine.SceneManagement;
 
 public class carhandle : MonoBehaviour
 {
@@ -73,7 +74,7 @@ public class carhandle : MonoBehaviour
                     enemyCar.transform.position = new Vector3(9.7f, -3.5f, 0);
                     break;
                 case 4:
-                    //ゲームクリアシーンを作る
+                    SceneManager.LoadScene("GameClearScene");
                     break;
             }
         }
@@ -125,7 +126,12 @@ public class carhandle : MonoBehaviour
     }
 
     void OnTriggerEnter2D(Collider2D other){
-        Debug.Log("衝突");
+        CarPos c = new CarPos();
+        c.userid = matchingManagerScript.userUuid;
+        c.pos = 4;
+        ServerSendCarPos(c);
+
+        SceneManager.LoadScene("GameOverScene");
     }
 
 
