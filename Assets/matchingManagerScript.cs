@@ -15,6 +15,8 @@ public class matchingManagerScript : MonoBehaviour
 
     private bool key = false;
 
+    public static string domain = "ws://localhost:8000/";
+
     [System.Serializable]
     public class PlayerData
     {
@@ -25,35 +27,32 @@ public class matchingManagerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ws = new WebSocket("ws://localhost:8000/ws/matchingroom/1/");
+        ws = new WebSocket(domain + "ws/matchingroom/1/");
         ws.OnOpen += (sender, e) =>
         {
-            Debug.Log("WebSocket Open");
+            //Debug.Log("WebSocket Open");
         };
 
         ws.OnMessage += (sender, e) =>
         {
             PlayerData d = JsonUtility.FromJson<PlayerData>(e.Data);
             //Debug.Log(d.playerA, d.playerB);
-            Debug.Log(userUuid);
+            //Debug.Log(userUuid);
             if(d.playerA == userUuid || d.playerB == userUuid){
                 room = d.playerA;
-                Debug.Log(room);
+                //Debug.Log(room);
                 key = true;
-            }
-            else{
-                Debug.Log("まだ待機");
             }
         };
 
         ws.OnError += (sender, e) =>
         {
-            Debug.Log("WebSocket Error Message: " + e.Message);
+            //Debug.Log("WebSocket Error Message: " + e.Message);
         };
 
         ws.OnClose += (sender, e) =>
         {
-            Debug.Log("WebSocket Close");
+            //Debug.Log("WebSocket Close");
         };
 
         ws.Connect();

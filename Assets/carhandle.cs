@@ -24,10 +24,10 @@ public class carhandle : MonoBehaviour
 
     void Start()
     {
-        ws3 = new WebSocket("ws://localhost:8000/ws/fightingroom/" + matchingManagerScript.room + "/");
+        ws3 = new WebSocket(matchingManagerScript.domain + "ws/fightingroom/" + matchingManagerScript.room + "/");
         ws3.OnOpen += (sender, e) =>
         {
-            Debug.Log("WebSocket Open");
+            //Debug.Log("WebSocket Open");
         };
 
         ws3.OnMessage += (sender, e) =>
@@ -45,12 +45,12 @@ public class carhandle : MonoBehaviour
 
         ws3.OnError += (sender, e) =>
         {
-            Debug.Log("WebSocket Error Message: " + e.Message);
+            //Debug.Log("WebSocket Error Message: " + e.Message);
         };
 
         ws3.OnClose += (sender, e) =>
         {
-            Debug.Log("WebSocket Close");
+            //Debug.Log("WebSocket Close");
         };
 
         ws3.Connect();

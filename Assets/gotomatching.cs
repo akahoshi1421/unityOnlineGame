@@ -5,20 +5,23 @@ using UnityEngine.SceneManagement;
 
 public class gotomatching : MonoBehaviour
 {
+    AudioClip clip;
+
     // Start is called before the first frame update
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        clip = gameObject.GetComponent<AudioSource> ().clip;
+        waitingController.gamePlayerOk = false;
     }
 
     public void StartBtnClick()
     {
-        SceneManager.LoadScene("MatchingScene");
+        GetComponent<AudioSource> ().PlayOneShot(clip);
+        Invoke("LoadMethod", 0.3f);
     }
+
+    void LoadMethod()
+    {
+        SceneManager.LoadScene("MatchingScene");
+    }    
 }

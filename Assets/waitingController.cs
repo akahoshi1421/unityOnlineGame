@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using WebSocketSharp;
 using WebSocketSharp.Net;
-
+using UnityEngine.SceneManagement;
 
 
 public class waitingController : MonoBehaviour
@@ -15,6 +15,10 @@ public class waitingController : MonoBehaviour
     public static int[] gameRandomRule;
 
     bool textdelte = false;
+
+    float counter = 0.0f;
+
+    bool gokey = false;
 
     [System.Serializable]
     public class RoomDatas
@@ -27,16 +31,16 @@ public class waitingController : MonoBehaviour
     public class RoomSettings
     {
         public string res;
-        public int[] random;
+        public int[] random;//これは使わない
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        ws2 = new WebSocket("ws://localhost:8000/ws/waitingroom/" + matchingManagerScript.room + "/");
+        ws2 = new WebSocket(matchingManagerScript.domain + "ws/waitingroom/" + matchingManagerScript.room + "/");
         ws2.OnOpen += (sender, e) =>
         {
-            Debug.Log("WebSocket Open");
+            //Debug.Log("WebSocket Open");
         };
 
         ws2.OnMessage += (sender, e) =>
@@ -53,12 +57,12 @@ public class waitingController : MonoBehaviour
 
         ws2.OnError += (sender, e) =>
         {
-            Debug.Log("WebSocket Error Message: " + e.Message);
+            //Debug.Log("WebSocket Error Message: " + e.Message);
         };
 
         ws2.OnClose += (sender, e) =>
         {
-            Debug.Log("WebSocket Close");
+            //Debug.Log("WebSocket Close");
         };
 
         ws2.Connect();
@@ -80,10 +84,19 @@ public class waitingController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        counter += Time.deltaTime;
+
         if(textdelte){
             textdelte = false;
+            gokey = true;
             GameObject t = GameObject.Find("matching");
+            GameObject t2 = GameObject.Find("hosoku");
             t.GetComponent<Text> ().text = "";
+            t2.GetComponent<Text> ().text = "";
+        }
+
+        if(counter > 10 && !gokey){
+            SceneManager.LoadScene("SampleScene");
         }
 
     }
